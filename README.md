@@ -41,3 +41,6 @@ See all changes in the [CHANGELOG](CHANGELOG.md) file.
 
 * [opengl-tutorial.org](http://www.opengl-tutorial.org/)
 * [Modern OpenGL Tutorials](http://ogldev.atspace.co.uk/)
+
+___________________________
+Para compilar: `g++ -o primeiro.out main.cpp -lGL -lGLU -lglut`
