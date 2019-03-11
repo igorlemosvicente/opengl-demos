@@ -1,5 +1,5 @@
 //
-// Created by aluno-uffs on 11/03/19.
+// Created by Igor Lemos Vicente on 11/03/19.
 //
 
 #ifndef OPENGL_DEMOS_IGOR_VETOR_H
