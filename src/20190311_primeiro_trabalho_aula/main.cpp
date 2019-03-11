@@ -31,8 +31,8 @@ public:
 
 RenderState rs;
 
-Vetor global_vetor(0.1, 0, 0);
-Vetor vetor_velocidade(0.001, 0, 0);
+Vetor primeiro_ponteiro(0, 0, 0, 1.0, 0.0, 0.0, 0.001);
+Vetor segundo_ponteiro(0, 0, 0, 0.0, 1.0, 0.0, 0.01);
 
 void init(void)
 {
@@ -45,12 +45,15 @@ void init(void)
 
 void exit() {
     delete &rs;
-    delete &global_vetor;
+    delete &primeiro_ponteiro;
+    delete &segundo_ponteiro;
 }
 
 void drawCoordinates() {
-    global_vetor.integracao_euler(vetor_velocidade);
-    global_vetor.draw();
+    primeiro_ponteiro.roda();
+    segundo_ponteiro.roda();
+    primeiro_ponteiro.draw();
+    segundo_ponteiro.draw();
 }
 
 void display(void)
