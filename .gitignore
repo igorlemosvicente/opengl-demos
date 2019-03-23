@@ -33,3 +33,11 @@
 
 # Files to keep
 !/build/obj/README.txt
+
+\.idea/
+
+*.filters
+
+*.user
+
+*.vcxproj
