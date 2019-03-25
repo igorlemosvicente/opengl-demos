@@ -17,3 +17,10 @@
  */
 
 ```
+
+# 25 de março de 2019
+1. Faça um programa que desenhe um quadrado na tela. O usuário pode mover o quadrado para cima/baixo/direita/esquerda usando as teclas do teclado (Dica: Não use transformações aqui).
+2. Faça um retângulo 3d (`glutWireCube()`) que pode ser rotacionado no eixo `x` e no eixo `y` com base nos comandos do usuário:
+> Setas direita/esquerda: Rotaciona ao redor do eixo Y
+> Setas cima/baixo: rotaciona ao redor do eixo X
+3. O mesmo que o 2, só que o usuário pode mover o retângulo 3D nos eixos X, Y e Z. Use as teclas AWSD para controlar a movimentação.
