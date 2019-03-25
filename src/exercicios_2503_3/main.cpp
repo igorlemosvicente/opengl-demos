@@ -22,8 +22,11 @@ const unsigned int FRAMES_PER_SECOND = 30;
 const unsigned int UPDATE_INTERVAL_MS = 1000 / FRAMES_PER_SECOND;
 
 Retangulo3D g_retangulo(0, 0, 0, 1);
+GLint g_angulo_orbita = 0;
+GLfloat gl_orbita_size = 0.5;
 
 void drawRetangulo(Retangulo3D retangulo);
+void drawOrbita(Retangulo3D retangulo);
 
 void display()
 {
@@ -40,6 +43,7 @@ void display()
     glTranslatef(0, 0, -10.0f);
 
     drawRetangulo(g_retangulo);
+    drawOrbita(g_retangulo);
 
     glutSwapBuffers();
 }
@@ -51,6 +55,20 @@ void drawRetangulo(Retangulo3D retangulo) {
         glRotated(retangulo.vertical_angle, 0, 1, 0);
         glRotated(retangulo.horizontal_angle, 1, 0, 0);
         glutWireCube(retangulo.size);
+    glPopMatrix();
+}
+
+void drawOrbita(Retangulo3D retangulo) {
+    glColor3f(retangulo.red, retangulo.green, retangulo.blue);
+    glPushMatrix();
+                glTranslatef(retangulo.x, retangulo.y, retangulo.z);
+    glPushMatrix();
+        glRotated(g_angulo_orbita++, 0, 0, 1);
+        glTranslatef(0, 2, 0);
+        glRotated(retangulo.vertical_angle, 0, 1, 0);
+        glRotated(retangulo.horizontal_angle, 1, 0, 0);
+        glutWireCube(gl_orbita_size);
+    glPopMatrix();
     glPopMatrix();
 }
 
