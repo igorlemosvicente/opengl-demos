@@ -17,13 +17,16 @@ public:
   GLfloat secondary_color_red, secondary_color_green, secondary_color_blue;
 
   Tabuleiro() : x(-4), y(4), z(0),
-                depth_angle(90),
+                depth_angle(-45),
                 primary_color_red(1), primary_color_green(1), primary_color_blue(1),
                 secondary_color_red(0), secondary_color_green(0), secondary_color_blue(0) {}
 
   void display() {
+    glPushMatrix();
+    glRotatef(depth_angle, 1, 0, 0);
     displayPrimaryColorSquares();
     displaySecondaryColorSquares();
+    glPopMatrix();
   }
 
 private:
