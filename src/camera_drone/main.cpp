@@ -62,17 +62,23 @@ void renderCoordinateAxis()
 
 void draw_checker_board() {
   glPushMatrix();
-  int size_board = 64;
+  int size_board = 8;
 
   glRotated(90, 1, 0, 0);
-
+glPushMatrix();
+  glTranslated(-size_board / 2 - 1, -size_board / 2 - 1, 0);
   for (int i = 0; i < size_board; i++) {
+  	glTranslated(0, 1, 0);
+    glPushMatrix();
     for (int j = 0; j < size_board; j++) {
       int parity = (i + j) % 2;
       glColor3f(parity, parity, parity);
-      glRecti(-(size_board / 2) + i, -(size_board / 2) + j, -(size_board / 2) + i + 1, -(size_board / 2) + j + 1);
+      glTranslated(1, 0, 0);
+      glRecti(0, 0, 1, 1);
     }
+    glPopMatrix();
   }
+  glPopMatrix();
   glPopMatrix();
 }
 
