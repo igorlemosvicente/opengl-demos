@@ -2,6 +2,7 @@
  * Exercício de 8 de abril de 2019
  * 1- Fazer uma câmera voadora. A câmera inicia longe de um objeto qualquer, ex: cubo. Ao longo de 5 segundos, a câmera voa em direção ao objeto.
  * 2- Ao chegar no objeto, a câmera voa ao redor dele (3 voltas no total), olhando para baixo em direção ao objeto.
+ * 3- Colocar um "chão" embaixo do objeto que seja um tabuleiro de xadrez gigante
  */
 
 #include <GL/glut.h>
@@ -59,7 +60,23 @@ void renderCoordinateAxis()
 	glEnd();
 }
 
-void display_object() {
+void draw_checker_board() {
+  glPushMatrix();
+  int size_board = 64;
+
+  glRotated(90, 1, 0, 0);
+
+  for (int i = 0; i < size_board; i++) {
+    for (int j = 0; j < size_board; j++) {
+      int parity = (i + j) % 2;
+      glColor3f(parity, parity, parity);
+      glRecti(-(size_board / 2) + i, -(size_board / 2) + j, -(size_board / 2) + i + 1, -(size_board / 2) + j + 1);
+    }
+  }
+  glPopMatrix();
+}
+
+void draw_scene() {
   double calculo_rotacao = 405 - counter_timer * 100;
   if (calculo_rotacao < -1125) {
     calculo_rotacao = 0;
@@ -67,12 +84,15 @@ void display_object() {
 
   double aproximacao = min(-15, -20 + counter_timer);
   double rotacao = min(-45, calculo_rotacao);
+
   glPushMatrix();
   glTranslatef(0, 0, aproximacao);
   glRotated(20, 1, 0, 0);
   glRotated(rotacao, 0, 1, 0);
+  draw_checker_board();
   glColor3f(1, 0, 0);
-  glutWireCube(5);
+  glTranslated(0.5, 0.5, 0.5);
+  glutWireCube(1);
   glPopMatrix();
 }
 
@@ -81,7 +101,7 @@ void display()
 	// Move the camera away from the origin along the Z axis by 10 pixels.
 //	glTranslatef(0, 0, max(-10, -100 + counter_timer));
 
-    display_object();
+    draw_scene();
 
 	// Render the X and Y axis to guide ourselves.
 //	renderCoordinateAxis();
