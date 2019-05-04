@@ -8,14 +8,23 @@
 #include <iostream>
 #include <iomanip>
 
+
+#include <time.h>
+#include <stdlib.h>
+
+
+//int r = rand();
+
 #include "FireParticle.h"
+
+#define NUMBER_PARTICLES 100
 
 const unsigned int FRAMES_PER_SECOND = 30;
 const unsigned int UPDATE_INTERVAL_MS = 1000 / FRAMES_PER_SECOND;
 
 int gTimeLastUpdateMs = 0;
 
-FireParticle fire(0, 1, 0, 0.3);
+FireParticle fires[NUMBER_PARTICLES];
 
 class RenderState {
 public:
@@ -106,7 +115,9 @@ void display(void)
 //  glutWireCube(1.0);
 //  drawCoordinates();
 
-  fire.display();
+  for (int i = 0; i < NUMBER_PARTICLES; i++) {
+    fires[i].display();
+  }
 
   glFlush();
 
@@ -155,7 +166,9 @@ void internalUpdate(int value)
   //std::cout << "timeNOw = " << timeNowMs << ", deltaSeconds = " << deltaSeconds << std::endl;
   // Invoke our update() function
   //  update(deltaSeconds);
-  fire.update();
+  for (int i = 0; i < NUMBER_PARTICLES; i++) {
+    fires[i].update();
+  }
 
   // Request a new frame rendering
   glutPostRedisplay();
@@ -168,6 +181,7 @@ void internalUpdate(int value)
 
 int main(int argc, char** argv)
 {
+  srand(time(NULL));   // Initialization, should only be called once.
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
   glutInitWindowSize(500, 500);

@@ -7,13 +7,21 @@
 
 #include <math.h>
 
-
 class FireParticle {
   GLfloat x, y, z, maximum_size;
   GLfloat alpha, beta;
   GLfloat lerp_increments = 0.05;
 
 public:
+  FireParticle() :
+    x(((float)rand())/RAND_MAX * 3),
+    y(((float)rand())/RAND_MAX),
+    z(((float)rand())/RAND_MAX * -3),
+    maximum_size(((float)rand())/RAND_MAX),
+    alpha(0),
+    beta(0),
+    lerp_increments(((float)rand())/RAND_MAX) {}
+
   FireParticle(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _maximum_size) :
   x(_x),
   y(_y),
