@@ -29,8 +29,8 @@
 #define MAX_TEXTURES 2
 
 
-Bmp *img1, *img2;
-unsigned char *data1, *data2;
+Bmp *img1, *img2, *img3;
+unsigned char *data1, *data2, *data3;
 GLuint textureID[MAX_TEXTURES];
 
 float ang = 0;
@@ -54,6 +54,10 @@ void init() {
   img2 = new Bmp("/home/aluno-uffs/opengl-demos-igor/src/20190506_textura/sky.bmp");
   img2->convertBGRtoRGB();
   data2 = img2->getImage();
+
+  img3 = new Bmp("/home/aluno-uffs/opengl-demos-igor/src/20190506_textura/box.bmp");
+  img3->convertBGRtoRGB();
+  data3 = img3->getImage();
 
   if (data1 != NULL) {
     glEnable(GL_TEXTURE);
@@ -98,6 +102,23 @@ void buildTextures() {
                     GL_RGB,
                     GL_UNSIGNED_BYTE,
                     data2);
+  //----------------------------------------------------------------------------------
+  //GL_REPEAT e mipmap
+  glGenTextures(1, &textureID[2]);
+  glBindTexture(GL_TEXTURE_2D, textureID[2]);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  gluBuild2DMipmaps(GL_TEXTURE_2D,
+                    GL_RGB,
+                    img3->getWidth(),
+                    img3->getHeight(),
+                    GL_RGB,
+                    GL_UNSIGNED_BYTE,
+                    data3);
   //----------------------------------------------------------------------------------
 //  //GL_CLAMP e glTextImage2D. Soh aceita texturas em potencia de 2.
 //  glGenTextures( 1, &textureID[1] );
@@ -160,6 +181,29 @@ void display(void) {
   gluPerspective(abertura, SCREEN_X / SCREEN_Y, znear, zfar);
 
   glMatrixMode(GL_MODELVIEW);
+
+  glPushMatrix();
+  glLoadIdentity();
+  glTranslated(0, 0, -40);
+
+  glBindTexture(GL_TEXTURE_2D, textureID[2]);
+
+  glDisable(GL_TEXTURE_GEN_S);
+  glDisable(GL_TEXTURE_GEN_T);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0, 0);
+  glVertex3f(-10, -10, 5);
+
+  glTexCoord2f(TEXT_COORD, 0);
+  glVertex3f(10, -10, 5);
+
+  glTexCoord2f(TEXT_COORD, TEXT_COORD);
+  glVertex3f(10, 10, 5);
+
+  glTexCoord2f(0, TEXT_COORD);
+  glVertex3f(-10, 10, 5);
+  glEnd();
+  glPopMatrix();
 
   int indice_textura = 0;
   glPushMatrix();
