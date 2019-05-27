@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const GLdouble NUMERAO = 1;
+const GLdouble NUMERAO = 0.5;
 
 GLdouble pontos[][2] = {
-    {0, 0},
+    {1, 1},
     {-0.2, -0.3},
     {0, -0.2},
     {NUMERAO, 0}
@@ -14,6 +14,7 @@ GLdouble pontos[][2] = {
 const GLdouble PASSO = 0.005;
 const int X = 0;
 const int Y = 1;
+GLint ponto_para_atualizar = 0;
 
 GLdouble power(GLdouble value, GLdouble power_value) {
   if (!power_value) {
@@ -27,10 +28,23 @@ void init() {
   glPolygonMode(GL_FRONT, GL_FILL);
 }
 
+void mouseFunc(int button, int state, int x, int y) {
+  if (button != GLUT_LEFT_BUTTON) { return; }
+  if (state !=  GLUT_DOWN) { return; }
+
+  GLdouble novo_x = (x - 300.0) / 300.0,
+           novo_y = (y - 300.0) / -300.0;
+  printf("%d, %d - %lf, %lf\n", x, y, novo_x, novo_y);
+
+  pontos[ponto_para_atualizar][X] = novo_x;
+  pontos[ponto_para_atualizar][Y] = novo_y;
+  ponto_para_atualizar = (ponto_para_atualizar + 1) % 4;
+}
+
 void render() {
   glLoadIdentity();
-  glTranslated(-NUMERAO / 2.0, 0, 0);
 
+  glPushMatrix();
   // pontos de controle
   glColor3f(0.0, 0.0, 1.0);
   glPointSize(3);
@@ -39,8 +53,10 @@ void render() {
     glVertex2d(pontos[i][X], pontos[i][Y]);
   }
   glEnd();
+  glPopMatrix();
 
 
+  glPushMatrix();
   // pontos da reta
   glColor3f(1.0, 0.0, 0.0);  // red
   glPointSize(1);
@@ -51,6 +67,7 @@ void render() {
     glVertex2d(x, y);
   }
   glEnd();
+  glPopMatrix();
 }
 
 void display(void) {
@@ -69,6 +86,7 @@ int main(int argc, char *argv[]) {
   glutInitWindowSize(600, 600);
   glutInitWindowPosition(250, 100);
   glutCreateWindow("");
+  glutMouseFunc(mouseFunc);
 
   init();
 
