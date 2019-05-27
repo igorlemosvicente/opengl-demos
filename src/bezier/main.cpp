@@ -6,12 +6,12 @@
 const GLdouble NUMERAO = 0.5;
 
 GLdouble pontos[][2] = {
-    {1, 1},
+    {0.9, 0.9},
     {-0.2, -0.3},
     {0, -0.2},
     {NUMERAO, 0}
 };
-const GLdouble PASSO = 0.005;
+const GLdouble PASSO = 0.01;
 const int X = 0;
 const int Y = 1;
 GLint ponto_para_atualizar = 0;
@@ -33,7 +33,6 @@ void mouseFunc(int button, int state, int x, int y) {
   if (button != GLUT_LEFT_BUTTON) { return; }
 
   if (state == GLUT_UP) {
-    ponto_para_atualizar = (ponto_para_atualizar + 1) % 4;
     left_mouse_down = 0;
     return;
   }
@@ -60,12 +59,23 @@ void mouseMotionFunc(int x, int y) {
   }
 }
 
+void keyboard(int key, int x, int y) {
+  switch(key) {
+    case GLUT_KEY_RIGHT:
+      ponto_para_atualizar = (ponto_para_atualizar + 1) % 4;
+      break;
+    case GLUT_KEY_LEFT:
+      ponto_para_atualizar = (4 + ponto_para_atualizar - 1) % 4;
+      break;
+  }
+}
+
 void render() {
   glLoadIdentity();
 
   glPushMatrix();
   // pontos de controle
-  glPointSize(3);
+  glPointSize(5);
   glBegin(GL_POINTS);
   for (int i = 0; i < 4; i++) {
     if (ponto_para_atualizar == i) {
@@ -111,6 +121,7 @@ int main(int argc, char *argv[]) {
   glutCreateWindow("");
   glutMouseFunc(mouseFunc);
   glutMotionFunc(mouseMotionFunc);
+  glutSpecialFunc(keyboard);
 
   init();
 
