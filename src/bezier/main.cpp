@@ -7,11 +7,11 @@ const GLdouble NUMERAO = 1;
 
 GLdouble pontos[][2] = {
     {0, 0},
-    {0, NUMERAO},
-    {NUMERAO, NUMERAO},
+    {-0.2, -0.3},
+    {0, -0.2},
     {NUMERAO, 0}
 };
-const GLdouble PASSO = 0.01;
+const GLdouble PASSO = 0.005;
 const int X = 0;
 const int Y = 1;
 
