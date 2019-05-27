@@ -15,6 +15,7 @@ const GLdouble PASSO = 0.005;
 const int X = 0;
 const int Y = 1;
 GLint ponto_para_atualizar = 0;
+char left_mouse_down = 0;
 
 GLdouble power(GLdouble value, GLdouble power_value) {
   if (!power_value) {
@@ -30,15 +31,33 @@ void init() {
 
 void mouseFunc(int button, int state, int x, int y) {
   if (button != GLUT_LEFT_BUTTON) { return; }
-  if (state !=  GLUT_DOWN) { return; }
 
-  GLdouble novo_x = (x - 300.0) / 300.0,
-           novo_y = (y - 300.0) / -300.0;
-  printf("%d, %d - %lf, %lf\n", x, y, novo_x, novo_y);
+  if (state == GLUT_UP) {
+    ponto_para_atualizar = (ponto_para_atualizar + 1) % 4;
+    left_mouse_down = 0;
+    return;
+  }
 
-  pontos[ponto_para_atualizar][X] = novo_x;
-  pontos[ponto_para_atualizar][Y] = novo_y;
-  ponto_para_atualizar = (ponto_para_atualizar + 1) % 4;
+  if (state == GLUT_DOWN) {
+    left_mouse_down = 1;
+    GLdouble novo_x = (x - 300.0) / 300.0,
+             novo_y = (y - 300.0) / -300.0;
+//    printf("%d, %d - %lf, %lf\n", x, y, novo_x, novo_y);
+    pontos[ponto_para_atualizar][X] = novo_x;
+    pontos[ponto_para_atualizar][Y] = novo_y;
+  }
+}
+
+void mouseMotionFunc(int x, int y) {
+  if (left_mouse_down) {
+    GLdouble novo_x = (x - 300.0) / 300.0,
+        novo_y = (y - 300.0) / -300.0;
+    printf("%d, %d - %lf, %lf\n", x, y, novo_x, novo_y);
+
+    pontos[ponto_para_atualizar][X] = novo_x;
+    pontos[ponto_para_atualizar][Y] = novo_y;
+
+  }
 }
 
 void render() {
@@ -87,6 +106,7 @@ int main(int argc, char *argv[]) {
   glutInitWindowPosition(250, 100);
   glutCreateWindow("");
   glutMouseFunc(mouseFunc);
+  glutMotionFunc(mouseMotionFunc);
 
   init();
 
