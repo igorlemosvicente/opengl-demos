@@ -65,10 +65,14 @@ void render() {
 
   glPushMatrix();
   // pontos de controle
-  glColor3f(0.0, 0.0, 1.0);
   glPointSize(3);
   glBegin(GL_POINTS);
   for (int i = 0; i < 4; i++) {
+    if (ponto_para_atualizar == i) {
+      glColor3f(0.0, 1.0, 0.0);
+    } else {
+      glColor3f(0.0, 0.0, 1.0);
+    }
     glVertex2d(pontos[i][X], pontos[i][Y]);
   }
   glEnd();
