@@ -31,7 +31,19 @@ void render() {
   glLoadIdentity();
   glTranslated(-NUMERAO / 2.0, 0, 0);
 
+  // pontos de controle
+  glColor3f(0.0, 0.0, 1.0);
+  glPointSize(3);
+  glBegin(GL_POINTS);
+  for (int i = 0; i < 4; i++) {
+    glVertex2d(pontos[i][X], pontos[i][Y]);
+  }
+  glEnd();
+
+
+  // pontos da reta
   glColor3f(1.0, 0.0, 0.0);  // red
+  glPointSize(1);
   glBegin(GL_POINTS);
   for (GLdouble t = 0.0; t < 1; t += PASSO) {
     GLdouble x = power((1 - t), 3)*pontos[0][X] + 3*t*power((1-t), 2)*pontos[1][X] + 3*power(t,2)*(1-t)*pontos[2][X] + power(t, 3)*pontos[3][X];
