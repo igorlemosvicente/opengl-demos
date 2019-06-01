@@ -13,6 +13,7 @@ GLdouble pontos[][3] = {
 };
 GLdouble coordenadas_bola[] = {0.9, 0.9, 1};
 GLdouble t_bola = 0;
+GLint segmento_bola = 1;
 const GLdouble PASSO = 0.01;
 const int X = 0;
 const int Y = 1;
@@ -92,15 +93,24 @@ static void display() {
 
   drawFloor();
 
-  coordenadas_bola[X] = power((1 - t_bola), 3) * pontos[0][X] + 3 * t_bola * power((1 - t_bola), 2) * pontos[1][X] +
-               3 * power(t_bola, 2) * (1 - t_bola) * pontos[2][X] + power(t_bola, 3) * pontos[3][X];
-  coordenadas_bola[Y] = power((1 - t_bola), 3) * pontos[0][Y] + 3 * t_bola * power((1 - t_bola), 2) * pontos[1][Y] +
-               3 * power(t_bola, 2) * (1 - t_bola) * pontos[2][Y] + power(t_bola, 3) * pontos[3][Y];
-  coordenadas_bola[Z] = power((1 - t_bola), 3) * pontos[0][Z] + 3 * t_bola * power((1 - t_bola), 2) * pontos[1][Z] +
-               3 * power(t_bola, 2) * (1 - t_bola) * pontos[2][Z] + power(t_bola, 3) * pontos[3][Z];
+  GLdouble primeiro_ponto_bola[] = {pontos[0][X] + segmento_bola, pontos[0][Y] + segmento_bola, pontos[0][Z] + segmento_bola};
+  GLdouble segundo_ponto_bola[] = {pontos[1][X] + segmento_bola, pontos[1][Y] + segmento_bola, pontos[1][Z] + segmento_bola};
+  GLdouble terceiro_ponto_bola[] = {pontos[2][X] + segmento_bola, pontos[2][Y] + segmento_bola, pontos[2][Z] + segmento_bola};
+  GLdouble ultimo_ponto_bola[] = {pontos[3][X] + segmento_bola, pontos[3][Y] + segmento_bola, pontos[3][Z] + segmento_bola};
+
+  coordenadas_bola[X] = power((1 - t_bola), 3) * primeiro_ponto_bola[X] + 3 * t_bola * power((1 - t_bola), 2) * segundo_ponto_bola[X] +
+               3 * power(t_bola, 2) * (1 - t_bola) * terceiro_ponto_bola[X] + power(t_bola, 3) * ultimo_ponto_bola[X];
+  coordenadas_bola[Y] = power((1 - t_bola), 3) * primeiro_ponto_bola[Y] + 3 * t_bola * power((1 - t_bola), 2) * segundo_ponto_bola[Y] +
+               3 * power(t_bola, 2) * (1 - t_bola) * terceiro_ponto_bola[Y] + power(t_bola, 3) * ultimo_ponto_bola[Y];
+  coordenadas_bola[Z] = power((1 - t_bola), 3) * primeiro_ponto_bola[Z] + 3 * t_bola * power((1 - t_bola), 2) * segundo_ponto_bola[Z] +
+               3 * power(t_bola, 2) * (1 - t_bola) * terceiro_ponto_bola[Z] + power(t_bola, 3) * ultimo_ponto_bola[Z];
   t_bola += PASSO;
   if (t_bola > 1) {
     t_bola = 0;
+    segmento_bola = segmento_bola + 1;
+    if (segmento_bola == 5) {
+      segmento_bola = 1;
+    }
   }
 
   glPushMatrix();
