@@ -98,6 +98,12 @@ static void display() {
   GLdouble terceiro_ponto_bola[] = {pontos[2][X] + segmento_bola, pontos[2][Y] + segmento_bola, pontos[2][Z] + segmento_bola};
   GLdouble ultimo_ponto_bola[] = {pontos[3][X] + segmento_bola, pontos[3][Y] + segmento_bola, pontos[3][Z] + segmento_bola};
 
+  if (segmento_bola == 4) {
+    ultimo_ponto_bola[X] = pontos[0][X] + 1;
+    ultimo_ponto_bola[Y] = pontos[0][Y] + 1;
+    ultimo_ponto_bola[Z] = pontos[0][Z] + 1;
+  }
+
   coordenadas_bola[X] = power((1 - t_bola), 3) * primeiro_ponto_bola[X] + 3 * t_bola * power((1 - t_bola), 2) * segundo_ponto_bola[X] +
                3 * power(t_bola, 2) * (1 - t_bola) * terceiro_ponto_bola[X] + power(t_bola, 3) * ultimo_ponto_bola[X];
   coordenadas_bola[Y] = power((1 - t_bola), 3) * primeiro_ponto_bola[Y] + 3 * t_bola * power((1 - t_bola), 2) * segundo_ponto_bola[Y] +
@@ -148,6 +154,12 @@ static void display() {
       GLdouble segundo_ponto[] = {pontos[1][X] + i, pontos[1][Y] + i, pontos[1][Z] + i};
       GLdouble terceiro_ponto[] = {pontos[2][X] + i, pontos[2][Y] + i, pontos[2][Z] + i};
       GLdouble ultimo_ponto[] = {pontos[3][X] + i, pontos[3][Y] + i, pontos[3][Z] + i};
+
+      if (i == 4) {
+        ultimo_ponto[X] = pontos[0][X] + 1;
+        ultimo_ponto[Y] = pontos[0][Y] + 1;
+        ultimo_ponto[Z] = pontos[0][Z] + 1;
+      }
 
       GLdouble x = power((1 - t), 3) * primeiro_ponto[X] + 3 * t * power((1 - t), 2) * segundo_ponto[X] +
                    3 * power(t, 2) * (1 - t) * terceiro_ponto[X] + power(t, 3) * ultimo_ponto[X];
