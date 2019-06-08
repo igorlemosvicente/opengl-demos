@@ -58,9 +58,7 @@ int main() {
     exit(2);
   }
 
-  /**
-   * Criação do Vertex Shader
-   */
+  /** Criação do Vertex Shader */
   // Cria um Vertex Shader na placa de vídeo.
   // A criação de shaders tem de ser sempre depois do carregamento das bibliotecas
   int vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
@@ -76,13 +74,11 @@ int main() {
   // Checando o erro de compilação do shader
   if (!success) {
     glGetShaderInfoLog(vertex_shader_id, 512, NULL, info_log);
-    std::cout << "Erro compilação shader" << std::endl << info_log << std::endl;
+    std::cout << "Erro compilação vertex shader" << std::endl << info_log << std::endl;
     return 3;
   }
 
-  /**
-   * Criação do Fragment Shader
-   */
+  /** Criação do Fragment Shader */
   // Cria um Fragment Shader na placa de vídeo.
   // A criação de shaders tem de ser sempre depois do carregamento das bibliotecas
   int fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
@@ -96,8 +92,22 @@ int main() {
   // Checando o erro de compilação do shader
   if (!success) {
     glGetShaderInfoLog(fragment_shader_id, 512, NULL, info_log);
-    std::cout << "Erro compilação shader" << std::endl << info_log << std::endl;
+    std::cout << "Erro compilação fragment shader" << std::endl << info_log << std::endl;
     return 3;
+  }
+
+  /** Criar um programa para rodar na placa de vídeo, pelo jeito. Nesse programa, terá os shaders criados */
+  int shader_program = glCreateProgram();
+  glAttachShader(shader_program, vertex_shader_id);
+  glAttachShader(shader_program, fragment_shader_id);
+  glLinkProgram(shader_program);
+
+  glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
+
+  if (!success) {
+    glGetShaderInfoLog(shader_program, 512, NULL, info_log);
+    std::cout << "Erro inicialização do programa " << std::endl << info_log << std::endl;
+    return 4;
   }
 
   while (true) {
