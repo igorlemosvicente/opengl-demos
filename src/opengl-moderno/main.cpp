@@ -10,17 +10,17 @@
 #define HEIGHT 500
 
 const char *vertex_shader_source = "#version 330 core\n"
-                                 "layout (location = 0) in vec3 aPos;\n"
-                                 "void main()\n"
-                                 "{\n"
-                                 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                 "}\0";
-const char *fragment_shader_source = "#version 330 core\n"
-                                   "out vec4 FragColor;\n"
+                                   "layout (location = 0) in vec3 aPos;\n"
                                    "void main()\n"
                                    "{\n"
-                                   "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                   "}\n\0";
+                                   "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                   "}\0";
+const char *fragment_shader_source = "#version 330 core\n"
+                                     "out vec4 FragColor;\n"
+                                     "void main()\n"
+                                     "{\n"
+                                     "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                     "}\n\0";
 
 
 void draw() {
@@ -58,7 +58,7 @@ int main() {
     exit(2);
   }
 
-  /** Criação do Vertex Shader */
+  /** Criação do Vertex Shader ====================================================================================== */
   // Cria um Vertex Shader na placa de vídeo.
   // A criação de shaders tem de ser sempre depois do carregamento das bibliotecas
   int vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
@@ -78,7 +78,7 @@ int main() {
     return 3;
   }
 
-  /** Criação do Fragment Shader */
+  /** Criação do Fragment Shader ==================================================================================== */
   // Cria um Fragment Shader na placa de vídeo.
   // A criação de shaders tem de ser sempre depois do carregamento das bibliotecas
   int fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
@@ -96,7 +96,7 @@ int main() {
     return 3;
   }
 
-  /** Criar um programa para rodar na placa de vídeo, pelo jeito. Nesse programa, terá os shaders criados */
+  /** Criar um programa para rodar na placa de vídeo, pelo jeito. Nesse programa, terá os shaders criados =========== */
   int shader_program = glCreateProgram();
   glAttachShader(shader_program, vertex_shader_id);
   glAttachShader(shader_program, fragment_shader_id);
@@ -109,6 +109,46 @@ int main() {
     std::cout << "Erro inicialização do programa " << std::endl << info_log << std::endl;
     return 4;
   }
+
+  /** Liberar espaço na placa de vídeo. Não interfere no que foi criado antes, porque ele já está lá na GPU rodando. =*/
+  glDeleteShader(vertex_shader_id);
+  glDeleteShader(fragment_shader_id);
+
+  /** Criação do VBO e do VAO ======================================================================================= */
+  float vertices[] = {
+      -0.5, -0.5, 0.0,
+      0.5, -0.5, 0.0,
+      -0.0, 0.5, 0.0,
+  };
+
+  unsigned int VBO, VAO;
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+
+  glBindVertexArray(VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(
+      GL_ARRAY_BUFFER,
+      sizeof(vertices),
+      vertices,
+      GL_STATIC_DRAW
+  );
+  glVertexAttribPointer(
+      0,
+      3,
+      GL_FLOAT,
+      GL_FALSE,
+      3 * sizeof(float),
+      (void *) 0
+  );
+
+  glEnableVertexAttribArray(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+
+  /** =============================================================================================================== */
+
 
   while (true) {
     if (glfwWindowShouldClose(window)) {
