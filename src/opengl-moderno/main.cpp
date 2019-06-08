@@ -22,12 +22,6 @@ const char *fragment_shader_source = "#version 330 core\n"
                                      "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
                                      "}\n\0";
 
-
-void draw() {
-  glClearColor(0.3, 0.3, 0.3, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT);
-}
-
 int main() {
   // Garantir que a gente possa ter janelas, ou algo assim
   glfwInit();
@@ -155,7 +149,14 @@ int main() {
       break;
     }
 
-    draw();
+    // draw();==========================================================================================================
+    glClearColor(0.3, 0.3, 0.3, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glUseProgram(shader_program);
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // ==========================================================================================================draw();
 
     // Usar buffer duplo (Foi adicionado ao código depois do PollEvents
     glfwSwapBuffers(window);
