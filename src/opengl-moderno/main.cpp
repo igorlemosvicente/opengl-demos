@@ -58,6 +58,9 @@ int main() {
     exit(2);
   }
 
+  /**
+   * Criação do Vertex Shader
+   */
   // Cria um Vertex Shader na placa de vídeo.
   // A criação de shaders tem de ser sempre depois do carregamento das bibliotecas
   int vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
@@ -73,6 +76,26 @@ int main() {
   // Checando o erro de compilação do shader
   if (!success) {
     glGetShaderInfoLog(vertex_shader_id, 512, NULL, info_log);
+    std::cout << "Erro compilação shader" << std::endl << info_log << std::endl;
+    return 3;
+  }
+
+  /**
+   * Criação do Fragment Shader
+   */
+  // Cria um Fragment Shader na placa de vídeo.
+  // A criação de shaders tem de ser sempre depois do carregamento das bibliotecas
+  int fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
+  // Pega o código fonte de um shader e o inicializa. Normalmente esse código estaria em um arquivo à parte, mas como estamos fazendo rápido, é uma string mesmo
+  glShaderSource(fragment_shader_id, 1, &fragment_shader_source, NULL);
+  glCompileShader(fragment_shader_id); // Processo assíncrono
+
+  // Processo de compilação do fragment shader
+  glGetShaderiv(fragment_shader_id, GL_COMPILE_STATUS, &success);
+
+  // Checando o erro de compilação do shader
+  if (!success) {
+    glGetShaderInfoLog(fragment_shader_id, 512, NULL, info_log);
     std::cout << "Erro compilação shader" << std::endl << info_log << std::endl;
     return 3;
   }
