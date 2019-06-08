@@ -45,7 +45,7 @@ int main() {
     }
 
     // Usar buffer duplo (Foi adicionado ao código depois do PollEvents
-    glfwSwapBuffers();
+    glfwSwapBuffers(window);
 
     // Alguma coisa de eventos e cliques na tela ou algo assim.
     // Quando não tem isso, dá problema até ao tentar fechar.
